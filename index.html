@@ -1,15 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>HTML5-bomberman-online</title>
-    <link rel="stylesheet" type="text/css" href="css/main.css" />
-    <script type="text/javascript" src="js/libs/prototype.js"></script>
-    <!-- including game classes -->
-    <script type="text/javascript" src="js/Bomberman/Core/Bomberman.js"></script>
+    <title>HTML5-bomberman-online</title>    
+    
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #wrapper {
+            width:  700px;
+            height: 500px;
+            margin: 30px auto 0 auto;
+        }
+    </style>
+    <!-- Game assets -->
+    <link rel="stylesheet" type="text/css" href="Bomberman/Assets/bomberman.css" />
+
+    <!-- Game settings and libs -->    
+    <script type="text/javascript" src="Bomberman/Libraries/prototype.js"></script>
+    <script type="text/javascript" src="Bomberman/BombermanGame.js"></script>
+
+    <!-- Core classes -->
+    <script type="text/javascript" src="Bomberman/Core/Game.js"></script>
+    <script type="text/javascript" src="Bomberman/Core/GameLoop.js"></script>
+
+    <!-- Controller classes -->
+    <script type="text/javascript" src="Bomberman/Controllers/Menu.js"></script>
+    
+    <!-- Model classes -->
+
+    <!-- View classes -->
+    
+    
+    
 </head>
-<body>
-    <div id="canvasHolder">
-        <canvas id="mainView"></canvas>
-    </div>
+<body onload="(new Bomberman.Game( 'wrapper', 700, 500 )).start()">
+    <div id="wrapper"></div>
 </body>
 </html>
