@@ -1,0 +1,8 @@
+#gameHolder {
+    position: relative;
+}
+#gameGui, #gameCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
