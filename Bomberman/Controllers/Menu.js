@@ -1,4 +1,4 @@
-window.Bomberman.MenuController = Class.create({
+BombermanGame.MenuController = Class.create({
     initialize : function()
     {
 

@@ -6,7 +6,8 @@ describe( "'Bomberman.Game' class", function () {
             var wrapper = document.createElement( "DIV" );
             wrapper.setAttribute( "id", wrapperId );
             document.body.appendChild( wrapper );
-            sut = new Bomberman.Game( wrapperId, width, height );
+            sut = new BombermanGame.Game();
+            sut.init( wrapperId, width, height );
         } );
 
         afterEach( function () {

@@ -19,9 +19,10 @@
 
     <!-- Game settings and libs -->    
     <script type="text/javascript" src="Bomberman/Libraries/prototype.js"></script>
-    <script type="text/javascript" src="Bomberman/BombermanGame.js"></script>
+    <script type="text/javascript" src="Bomberman/Config/BombermanCfg.js"></script>
 
     <!-- Core classes -->
+    <script type="text/javascript" src="Bomberman/Core/DIContainer.js"></script>
     <script type="text/javascript" src="Bomberman/Core/Game.js"></script>
     <script type="text/javascript" src="Bomberman/Core/GameLoop.js"></script>
 
@@ -32,10 +33,12 @@
 
     <!-- View classes -->
     
-    
-    
+    <!-- DIC services -->
+    <script type="text/javascript" src="Bomberman/Config/DIContainerServices.js"></script>
+
+    <script type="text/javascript" src="Bomberman/Bomberman.js"></script>
 </head>
-<body onload="(new Bomberman.Game( 'wrapper', 700, 500 )).start()">
+<body onload="Bomberman.init( 'wrapper', 700, 500 )">
     <div id="wrapper"></div>
 </body>
 </html>

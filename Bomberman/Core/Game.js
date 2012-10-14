@@ -1,27 +1,25 @@
 /**
  * Main game class that handles all the request and starts required controllers
  */
-Bomberman.Game = Class.create({
-    _currentController : null, // current controller ID
+BombermanGame.Game = Class.create({
 
     /**
-     * Constructor
      * Initiates the required game display elements like GAME element holder, CANVAS and GUI
      *
      * @param {String} wrapper ID of the DOM element that wraps the game elements
      * @param {int}    width  width of the game view
      * @param {int}    height height of the game view
      */
-    initialize : function( wrapper, width, height )
+    init : function( wrapper, width, height )
     {
         // creating required DOM elements
         var holder = document.createElement( "DIV" ),
             canvas = document.createElement( "CANVAS" ),
             gui    = document.createElement( "DIV" );
 
-        holder.setAttribute( "id", Bomberman.cfg.holderId );
-        canvas.setAttribute( "id", Bomberman.cfg.canvasId );
-        gui.setAttribute( "id", Bomberman.cfg.guiId );
+        holder.setAttribute( "id", BombermanGame.cfg.holderId );
+        canvas.setAttribute( "id", BombermanGame.cfg.canvasId );
+        gui.setAttribute( "id", BombermanGame.cfg.guiId );
 
         // resizing the game holder, canvas and gui elements
         holder.style.width  = width  + "px";
@@ -37,13 +35,6 @@ Bomberman.Game = Class.create({
         holder.appendChild( canvas );
         holder.appendChild( gui );
         document.getElementById( wrapper ).appendChild( holder );
-    },
-
-    /**
-     * Starts the game
-     */
-    start : function()
-    {
-
     }
+
 });
