@@ -3,6 +3,19 @@
  */
 BombermanGame.Game = Class.create({
 
+    DIC : null,
+
+    /**
+     * Constructor
+     * Assigns the DIContainer
+     *
+     * @param {DIContainer} DIContainer
+     */
+    initialize : function( DIContainer )
+    {
+        this.DIC = DIContainer;
+    },
+
     /**
      * Initiates the required game display elements like GAME element holder, CANVAS and GUI
      *
@@ -12,29 +25,7 @@ BombermanGame.Game = Class.create({
      */
     init : function( wrapper, width, height )
     {
-        // creating required DOM elements
-        var holder = document.createElement( "DIV" ),
-            canvas = document.createElement( "CANVAS" ),
-            gui    = document.createElement( "DIV" );
-
-        holder.setAttribute( "id", BombermanGame.cfg.holderId );
-        canvas.setAttribute( "id", BombermanGame.cfg.canvasId );
-        gui.setAttribute( "id", BombermanGame.cfg.guiId );
-
-        // resizing the game holder, canvas and gui elements
-        holder.style.width  = width  + "px";
-        holder.style.height = height + "px";
-
-        gui.style.width  = width + "px";
-        gui.style.height = height + "px";
-
-        canvas.width  = width;
-        canvas.height = height;
-
-        // adding the new DOM elements to the wrapper element
-        holder.appendChild( canvas );
-        holder.appendChild( gui );
-        document.getElementById( wrapper ).appendChild( holder );
+        this.DIC.get( "DOMHelper" ).createInitialElements( wrapper, width, height );
     }
 
 });
