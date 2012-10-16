@@ -1,4 +1,4 @@
-describe( "Class 'Bomberman.DIContainer'", function () {
+describe( "Class 'BombermanGame.DIContainer'", function () {
 
     describe( "when getting a service", function () {
 

@@ -1,4 +1,4 @@
-describe( "'Bomberman.DOMHelper' class", function () {
+describe( "Class 'BombermanGame.DOMHelper'", function () {
     describe( "method 'createInitialElements'", function () {
         var width = 700, height = 500, wrapperId = "testWrapper", sut;
 
