@@ -6,12 +6,21 @@ BombermanGame.DIContainer = Class.create({
     /**
      * List of defined services
      */
-    _services : {},
+    services : null,
 
     /**
      * List of shared instances
      */
-    _sharedInstances : {},
+    sharedInstances : null,
+
+    /**
+     * Constructor
+     */
+    initialize : function()
+    {
+        this.services = {};
+        this.sharedInstances = {};
+    },
 
     /**
      * Sets the service by assigning it to the given name
@@ -26,10 +35,10 @@ BombermanGame.DIContainer = Class.create({
     set : function( serviceName, definition, shared )
     {
         if ( shared === true ) {
-            this._sharedInstances[serviceName] = true;
+            this.sharedInstances[serviceName] = true;
         }
 
-        this._services[serviceName] = definition;
+        this.services[serviceName] = definition;
 
         return this;
     },
@@ -45,13 +54,28 @@ BombermanGame.DIContainer = Class.create({
     get : function( serviceName )
     {
         var result = null;
-        if ( this._sharedInstances[serviceName] ) {
+        if ( this.sharedInstances[serviceName] ) {
             result = this._getSharedService( serviceName );
         } else {
             result = this._getService( serviceName );
         }
 
         return result;
+    },
+
+    /**
+     * Removes the services from the container
+     *
+     * @param {String} serviceName name of the service to remove
+     */
+    remove : function( serviceName )
+    {
+        if ( this.services[serviceName] ) {
+            delete this.services[serviceName];
+            if ( this.sharedInstances[serviceName] ) {
+                delete this.sharedInstances[serviceName];
+            }
+        }
     },
 
     /**
@@ -111,8 +135,8 @@ BombermanGame.DIContainer = Class.create({
      */
     _getService : function( serviceName )
     {
-        if ( this._services[serviceName] ) {
-            return this._services[serviceName]();
+        if ( this.services[serviceName] ) {
+            return this.services[serviceName]();
         } else {
             throw new Error( "Service \"" + serviceName + "\" doesn't exist" );
         }
@@ -129,11 +153,11 @@ BombermanGame.DIContainer = Class.create({
      */
     _getSharedService : function( serviceName )
     {
-        if ( this._sharedInstances[serviceName] === true ) {
-            this._sharedInstances[serviceName] = this._services[serviceName]();
+        if ( this.sharedInstances[serviceName] === true ) {
+            this.sharedInstances[serviceName] = this.services[serviceName]();
         }
 
-        return this._sharedInstances[serviceName];
+        return this.sharedInstances[serviceName];
     }
 
 });

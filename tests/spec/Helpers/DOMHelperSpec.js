@@ -27,7 +27,7 @@ describe( "Class 'BombermanGame.DOMHelper'", function () {
             expect( $$( "#gameHolder #gameGui" ).length ).toEqual( 1 );
         } );
 
-        it( "all new elements should have the width of " + width + " and height of " + height, function () {
+        it( "all new elements should have the width and height that was passed to the method", function () {
             expect( $( "gameHolder" ).style.width ).toEqual( width + "px" );
             expect( $( "gameHolder" ).style.height ).toEqual( height + "px" );
 

@@ -1,16 +1,34 @@
 describe( "Class 'BombermanGame.DIContainer'", function () {
 
-    describe( "getting a service", function () {
+    describe( "method 'set'", function() {
+        var container  = new BombermanGame.DIContainer(),
+            serviceOne = function() { return function() { this.test = 1; } };
 
-        var container = new BombermanGame.DIContainer(),
-            service   = function() { return new function() { this.test = 0 }};
+        container.set( 'serviceOne', serviceOne, true );
 
+        it( "should add service to the container", function() {
+            expect( container.services.serviceOne ).toEqual( serviceOne );
+        });
 
-        container.set( "myService", service, false );
-        container.set( "mySharedService", service, true );
+        it( "should mark the service as shared in the container if 'shared' parameter is true", function() {
+            expect( container.sharedInstances.serviceOne ).toBe( true );
+        });
 
+    });
 
-        it( "should return a new instance if it's not shared", function() {
+    describe( "method 'get'", function () {
+        var container = new BombermanGame.DIContainer();
+
+        container.services = {
+            myService       : function() { return new function() { this.test = 0 }},
+            mySharedService : function() { return new function() { this.test = 1 }}
+        };
+
+        container.sharedInstances = {
+            mySharedService : true
+        };
+
+        it( "should return a new instance if the service is not set as shared", function() {
             var serviceOne = container.get( "myService" ),
                 serviceTwo = container.get( "myService" );
 
@@ -22,7 +40,7 @@ describe( "Class 'BombermanGame.DIContainer'", function () {
             expect( serviceTwo.test ).toEqual( 0 );
         });
 
-        it( "should return the same instance on consecutive calls if it's shared", function() {
+        it( "should on consecutive calls return the same instance if the service was set as shared", function() {
             var serviceOne = container.get( "mySharedService" ),
                 serviceTwo;
 
@@ -35,21 +53,15 @@ describe( "Class 'BombermanGame.DIContainer'", function () {
             expect( serviceTwo ).toBe( serviceOne );
         });
 
-        it( "should throw exception if service is not set", function () {
+        it( "should throw exception if trying to get a non-existing service", function () {
             expect( function() { container.get( "nonExisting" ) }).toThrow( "Service \"nonExisting\" doesn't exist" );
         });
 
     });
 
-    describe( "loading services from other object", function() {
-
+    describe( "method 'load'", function() {
         var container = new BombermanGame.DIContainer(),
             services  = {
-                shared: {
-                    "serviceThree" : function() {
-                        return new function() { this.test = 3; };
-                    }
-                },
                 general : {
                     "serviceOne" : function() {
                         return new function() { this.test = 1; };
@@ -57,12 +69,17 @@ describe( "Class 'BombermanGame.DIContainer'", function () {
                     "serviceTwo" : function() {
                         return new function() { this.test = 2; };
                     }
+                },
+                shared: {
+                    "serviceThree" : function() {
+                        return new function() { this.test = 3; };
+                    }
                 }
             };
 
         container.load( services );
 
-        it( "should add the services from given object to the DIContainer object", function() {
+        it( "should add the services from given object to the container", function() {
             var serviceOne   = container.get( "serviceOne" ),
                 serviceTwo   = container.get( "serviceTwo" ),
                 serviceThree = container.get( "serviceThree" );
@@ -70,6 +87,36 @@ describe( "Class 'BombermanGame.DIContainer'", function () {
             expect( serviceOne ).toEqual( services.general.serviceOne() );
             expect( serviceTwo ).toEqual( services.general.serviceTwo() );
             expect( serviceThree ).toEqual( services.shared.serviceThree() );
+        });
+
+    });
+
+    describe( "method 'remove'", function() {
+        var container = new BombermanGame.DIContainer();
+        container.load({
+            general : {
+                "serviceOne" : function() {
+                    return new function() { this.test = 1; };
+                }
+            },
+            shared: {
+                "serviceTwo" : function() {
+                    return new function() { this.test = 3; };
+                }
+            }
+        });
+
+        // first call creates a shared instance
+        container.get( "serviceTwo" );
+
+        // removing both services
+        container.remove( "serviceOne" );
+        container.remove( "serviceTwo" );
+
+        it( "should remove the service and its shared instance (if any) from the container", function() {
+            // both services are gone and should throw exceptions
+            expect( function() { container.get( "serviceOne" ); } ).toThrow();
+            expect( function() { container.get( "serviceTwo" ); } ).toThrow();
         });
 
     });
