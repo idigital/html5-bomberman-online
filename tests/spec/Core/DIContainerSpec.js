@@ -1,6 +1,6 @@
 describe( "Class 'BombermanGame.DIContainer'", function () {
 
-    describe( "when getting a service", function () {
+    describe( "getting a service", function () {
 
         var container = new BombermanGame.DIContainer(),
             service   = function() { return new function() { this.test = 0 }};
@@ -45,22 +45,31 @@ describe( "Class 'BombermanGame.DIContainer'", function () {
 
         var container = new BombermanGame.DIContainer(),
             services  = {
-                "serviceOne" : function() {
-                    return new function() { this.test = 1; };
+                shared: {
+                    "serviceThree" : function() {
+                        return new function() { this.test = 3; };
+                    }
                 },
-                "serviceTwo" : function() {
-                    return new function() { this.test = 2; };
+                general : {
+                    "serviceOne" : function() {
+                        return new function() { this.test = 1; };
+                    },
+                    "serviceTwo" : function() {
+                        return new function() { this.test = 2; };
+                    }
                 }
             };
 
+        container.load( services );
+
         it( "should add the services from given object to the DIContainer object", function() {
-            container.load( services );
+            var serviceOne   = container.get( "serviceOne" ),
+                serviceTwo   = container.get( "serviceTwo" ),
+                serviceThree = container.get( "serviceThree" );
 
-            var serviceOne = container.get( "serviceOne" ),
-                serviceTwo = container.get( "serviceTwo" );
-
-            expect( serviceOne ).toEqual( services.serviceOne() );
-            expect( serviceTwo ).toEqual( services.serviceTwo() );
+            expect( serviceOne ).toEqual( services.general.serviceOne() );
+            expect( serviceTwo ).toEqual( services.general.serviceTwo() );
+            expect( serviceThree ).toEqual( services.shared.serviceThree() );
         });
 
     });

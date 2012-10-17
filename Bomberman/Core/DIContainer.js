@@ -61,7 +61,42 @@ BombermanGame.DIContainer = Class.create({
      */
     load : function( services )
     {
-        Object.extend( this._services, services );
+        this._loadGeneral( services );
+        this._loadShared( services );
+    },
+
+    /**
+     * Loads general services from the given object
+     * If no "general" object was found or it's empty - no services are set
+     *
+     * @param {Object} services
+     *
+     * @private
+     */
+    _loadGeneral : function( services )
+    {
+        if ( services.general ) {
+            for ( var serviceName in services.general ) {
+                this.set( serviceName, services.general[serviceName], false );
+            }
+        }
+    },
+
+    /**
+     * Loads shared services from the given object
+     * If no "shared" object was found or it's empty - no services are set
+     *
+     * @param {Object} services
+     *
+     * @private
+     */
+    _loadShared : function( services )
+    {
+        if ( services.shared ) {
+            for ( var serviceName in services.shared ) {
+                this.set( serviceName, services.shared[serviceName], true );
+            }
+        }
     },
 
     /**
